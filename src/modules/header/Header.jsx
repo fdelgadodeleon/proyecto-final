@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Header.css';
 import { useHistory } from "react-router-dom";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 const Header = () => {
   let history = useHistory();
@@ -13,6 +14,7 @@ const Header = () => {
   return (
     <div className="header">
       <div className="logo" onClick={goToHome}>
+        <ShoppingCartIcon fontSize="large" />
         <h3>SGC</h3>
       </div>
       <div className="links">
