@@ -10,6 +10,7 @@ import Employees from './modules/employees/Employees';
 import Products from './modules/products/Products';
 import Sales from './modules/sales/Sales';
 import NotFound from './modules/notFound/NotFound';
+import ProductForm from './modules/products/ProductForm';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/employees" component={Employees} />
+          <Route path="/products/new" component={ProductForm} />
           <Route path="/products" component={Products} />
           <Route path="/sales" component={Sales} />
           <Route component={NotFound} />
