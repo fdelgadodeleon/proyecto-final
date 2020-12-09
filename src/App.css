@@ -3,5 +3,6 @@ header {
 }
 
 .container {
-  height: calc(100vh - 70px);
+  height: calc(100vh - 70px -60px);
+  padding: 30px;
 }
