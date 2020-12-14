@@ -9,7 +9,9 @@ const Employees = ({ history }) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-
+  /**
+   * Al montar el componente realiza una request al backend para cargar el listado de empleados
+   */
   useEffect(() => {
     setLoading(true)
     axios('https://5faeb24463e40a0016d8a044.mockapi.io/api/employees')
