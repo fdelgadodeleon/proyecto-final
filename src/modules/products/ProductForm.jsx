@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useFormik } from 'formik';
 import {
   Grid,
   TextField,
@@ -10,51 +11,67 @@ import {
 } from '@material-ui/core';
 
 const ProductForm = ({ onSubmit, onCancel, loadingSubmit, brands, currentProduct }) => {
-  const [product, setProduct] = useState({})
 
+  /**
+   * Se realizan todas las validaciones necesarias y se setea el objeto errors con los mensajes de error de cada campo 
+   */
+  const validate = values => {
+    const errors = {};
+    if (!values.code) {
+      errors.code = 'Campo requerido';
+    }
+    if (!values.name) {
+      errors.name = 'Campo requerido';
+    }
+    return errors;
+
+  }
+
+  /**
+   * Se crea una instancia de formik
+   */
+  const formik = useFormik({
+    initialValues: currentProduct,
+    onSubmit: values => onSubmit(values),
+    validate
+  })
+
+  /**
+   * Se actualizan los valores del form cada vez que se modifica currentProduct
+   */
   useEffect(() => {
-    setProduct(currentProduct)
+    formik.setValues(currentProduct)
   }, [currentProduct])
 
-  const handleChange = event => {
-    const { name, value } = event.target
-
-    setProduct({
-      ...product,
-      [name]: value
-    })
-  }
-
-  const handleSubmit = event => {
-    event.preventDefault()
-    onSubmit(product)
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={5}>
         <Grid item xs={12} md={3}>
           <TextField
             id="code"
-            label="Código"
+            label="Código *"
             variant="outlined"
             className="input"
             name="code"
-            value={product.code}
-            onChange={handleChange}
-            required
+            value={formik.values.code}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.errors.code && formik.touched.code}
+            helperText={formik.touched.code ? formik.errors.code : null}
           />
         </Grid>
         <Grid item xs={12} md={3}>
           <TextField
             id="name"
-            label="Nombre"
+            label="Nombre *"
             variant="outlined"
             className="input"
             name="name"
-            value={product.name}
-            onChange={handleChange}
-            required
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.errors.name && formik.touched.name}
+            helperText={formik.touched.name ? formik.errors.name : null}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -64,8 +81,8 @@ const ProductForm = ({ onSubmit, onCancel, loadingSubmit, brands, currentProduct
             variant="outlined"
             className="input"
             name="description"
-            value={product.description}
-            onChange={handleChange} />
+            value={formik.values.description}
+            onChange={formik.handleChange} />
         </Grid>
       </Grid>
       <Grid container spacing={5}>
@@ -75,8 +92,8 @@ const ProductForm = ({ onSubmit, onCancel, loadingSubmit, brands, currentProduct
             <Select
               labelId="brand-label"
               id="brand"
-              value={product.brandId}
-              onChange={handleChange}
+              value={formik.values.brandId}
+              onChange={formik.handleChange}
               label="Marca"
               name="brandId"
             >
@@ -97,8 +114,8 @@ const ProductForm = ({ onSubmit, onCancel, loadingSubmit, brands, currentProduct
             className="input"
             type="number"
             name="price"
-            value={product.price}
-            onChange={handleChange} />
+            value={formik.values.price}
+            onChange={formik.handleChange} />
         </Grid>
         <Grid item xs={12} md={3}>
           <TextField
@@ -108,8 +125,8 @@ const ProductForm = ({ onSubmit, onCancel, loadingSubmit, brands, currentProduct
             className="input"
             type="number"
             name="stock"
-            value={product.stock}
-            onChange={handleChange} />
+            value={formik.values.stock}
+            onChange={formik.handleChange} />
         </Grid>
         <Grid item xs={12} md={3}>
           <TextField
@@ -119,8 +136,8 @@ const ProductForm = ({ onSubmit, onCancel, loadingSubmit, brands, currentProduct
             className="input"
             type="number"
             name="weight"
-            value={product.weight}
-            onChange={handleChange} />
+            value={formik.values.weight}
+            onChange={formik.handleChange} />
         </Grid>
       </Grid>
       <Grid container spacing={5} justify="center">
