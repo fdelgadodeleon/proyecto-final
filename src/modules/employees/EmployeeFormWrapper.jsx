@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, SnackbarContent, Snackbar } from '@material-ui/core';
 import EmployeeForm from './EmployeeForm';
-import axios from 'axios';
+import { requests } from '../../utils/requestHandler';
 
 const EmployeeFormWrapper = ({ match, history }) => {
   const [loading, setLoading] = useState(false)
@@ -17,16 +17,10 @@ const EmployeeFormWrapper = ({ match, history }) => {
   useEffect(() => {
     if (match.params.id) {
       setLoading(true)
-      axios.get('https://5faeb24463e40a0016d8a044.mockapi.io/api/employees')
-        .then(data => {
-          setCurrentEmployee(data)
-          setLoading(false)
-        })
-        .catch(error => {
-          console.log(error)
-          setLoading(false)
-          setError("Hubo un error en la consulta")
-        })
+      requests.get('/employees')
+        .then(data => setCurrentEmployee(data))
+        .catch(error => setError(error))
+        .then(() => setLoading(false))
     } else {
       setCurrentEmployee({
         firstName: '',
@@ -51,16 +45,10 @@ const EmployeeFormWrapper = ({ match, history }) => {
    */
   useEffect(() => {
     setLoading(true)
-    axios.get('https://5faeb24463e40a0016d8a044.mockapi.io/api/sectors')
-      .then(res => {
-        setSectors(res.data)
-        setLoading(false)
-      })
-      .catch(error => {
-        console.log(error)
-        setLoading(false)
-        setError("Hubo un error en la consulta")
-      })
+    requests.get('/sectors')
+      .then(res => setSectors(res.data))
+      .catch(error => setError(error))
+      .then(() => setLoading(false))
   }, [])
 
   /**
@@ -69,7 +57,7 @@ const EmployeeFormWrapper = ({ match, history }) => {
   const handleSubmit = async employee => {
     try {
       setLoadingSubmit(true)
-      const res = match.params.id ? await update(employee) : await create(employee)
+      match.params.id ? await update(employee) : await create(employee)
       setLoadingSubmit(false)
       history.goBack()
     } catch (error) {
@@ -83,14 +71,14 @@ const EmployeeFormWrapper = ({ match, history }) => {
    * Request para actualizar un empleado
    */
   const update = employee => {
-    return axios.put(`https://5faeb24463e40a0016d8a044.mockapi.io/api/employees/${match.params.id}`, employee);
+    return requests.put(`/employees/${match.params.id}`, employee);
   }
 
   /**
    * Request para crear un nuevo empleado
    */
   const create = async employee => {
-    return axios.post('https://5faeb24463e40a0016d8a044.mockapi.io/api/employees', employee)
+    return requests.post('/employees', employee)
   }
 
   const handleCancel = () => {

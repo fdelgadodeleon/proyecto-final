@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import ProductForm from './ProductForm';
-import axios from 'axios';
 import {
   Typography,
   CircularProgress,
@@ -8,6 +7,7 @@ import {
   Snackbar
 } from '@material-ui/core';
 import './products.css';
+import { requests } from '../../utils/requestHandler';
 
 const ProductFormWrapper = ({ match, history }) => {
   const [loadingSubmit, setLoadingSubmit] = useState(false)
@@ -18,31 +18,19 @@ const ProductFormWrapper = ({ match, history }) => {
 
   useEffect(() => {
     setLoading(true)
-    axios('https://5faeb24463e40a0016d8a044.mockapi.io/api/brands')
-      .then(res => {
-        setBrands(res.data)
-        setLoading(false)
-      })
-      .catch(error => {
-        console.log(error)
-        setLoading(false)
-        setError("Hubo un error en la consulta")
-      })
+    requests.get('/brands')
+      .then(res => setBrands(res.data))
+      .catch(error => setError(error))
+      .then(() => setLoading(false))
   }, [])
 
   useEffect(() => {
     if (match.params.id) {
       setLoading(true)
-      axios(`https://5faeb24463e40a0016d8a044.mockapi.io/api/products/${match.params.id}`)
-        .then(res => {
-          setCurrentProduct(res.data)
-          setLoading(false)
-        })
-        .catch(error => {
-          console.log(error)
-          setLoading(false)
-          setError("Hubo un error en la consulta")
-        })
+      requests.get(`/products/${match.params.id}`)
+        .then(res => setCurrentProduct(res.data))
+        .catch(error => setError(error))
+        .then(() => setLoading(false))
     } else {
       setCurrentProduct({
         code: "",
@@ -59,18 +47,17 @@ const ProductFormWrapper = ({ match, history }) => {
   const handleSubmit = async product => {
     setLoadingSubmit(true)
     try {
-      const res = match.params.id ? await update(product) : await create(product)
-      console.log(res)
+      match.params.id ? await update(product) : await create(product)
       setLoadingSubmit(false)
       history.push("/products")
     } catch (error) {
       setLoadingSubmit(false)
-      setError("Hubo un error en la consulta")
+      setError(error)
     }
   }
 
-  const create = product => axios.post('https://5faeb24463e40a0016d8a044.mockapi.io/api/products', product)
-  const update = product => axios.put(`https://5faeb24463e40a0016d8a044.mockapi.io/api/products/${match.params.id}`, product)
+  const create = product => requests.post('/products', product)
+  const update = product => requests.put(`/products/${match.params.id}`, product)
 
   const handleCancel = () => {
     history.goBack()

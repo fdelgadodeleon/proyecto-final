@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Snackbar, SnackbarContent, Typography, Button } from '@material-ui/core';
 import EmployeeTable from './EmployeeTable';
 import './employees.css';
-import axios from 'axios';
+import { requests } from '../../utils/requestHandler';
 
 const Employees = ({ history }) => {
   const [employees, setEmployees] = useState([])
@@ -14,16 +14,10 @@ const Employees = ({ history }) => {
    */
   useEffect(() => {
     setLoading(true)
-    axios('https://5faeb24463e40a0016d8a044.mockapi.io/api/employees')
-      .then(res => {
-        setEmployees(res.data)
-        setLoading(false)
-      })
-      .catch(error => {
-        console.log(error)
-        setLoading(false)
-        setError("Hubo un error en la consulta")
-      })
+    requests.get('/employees')
+      .then(res => setEmployees(res.data))
+      .catch(error => setError(error))
+      .then(() => setLoading(false))
   }, [])
 
   const goToForm = () => {
