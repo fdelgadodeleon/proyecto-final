@@ -17,8 +17,8 @@ const EmployeeFormWrapper = ({ match, history }) => {
   useEffect(() => {
     if (match.params.id) {
       setLoading(true)
-      requests.get('/employees')
-        .then(data => setCurrentEmployee(data))
+      requests.get(`/employees/${match.params.id}`)
+        .then(res => setCurrentEmployee(res.data))
         .catch(error => setError(error))
         .then(() => setLoading(false))
     } else {

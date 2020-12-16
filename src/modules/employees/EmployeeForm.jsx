@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Grid,
   TextField,
@@ -15,15 +15,45 @@ import { useFormik } from 'formik';
 
 const EmployeeForm = ({ currentEmployee, sectors, loading, loadingSubmit, onSubmit, onCancel }) => {
 
+
+  /**
+   * Validaciones
+   */
+  const validate = values => {
+    const errors = {};
+
+    if (!values.firstName) {
+      errors.firstName = 'Campo requerido'
+    }
+    if (!values.firstSurname) {
+      errors.firstSurname = 'Campo requerido'
+    }
+
+    if (!values.email) {
+      errors.email = 'Campo requerido'
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+      errors.email = 'El email ingresado es incorrecto'
+    }
+
+    return errors
+  }
+
   /**
    * Inicialización de formik
    */
   const formik = useFormik({
     initialValues: currentEmployee,
-    onSubmit: values => {
-      onSubmit(values)
-    },
+    onSubmit, //  = onSubmit: onSubmit
+    validate // = validate: validate
   })
+
+  /**
+   * Se actualizan los valores del form cada vez que se modifica currentEmployee
+   */
+  useEffect(() => {
+    formik.setValues(currentEmployee)
+  }, [currentEmployee])
+
 
   return (
     <div>
@@ -40,7 +70,9 @@ const EmployeeForm = ({ currentEmployee, sectors, loading, loadingSubmit, onSubm
                 name="firstName"
                 value={formik.values.firstName}
                 onChange={formik.handleChange}
-                required
+                onBlur={formik.handleBlur}
+                error={formik.errors.firstName && formik.touched.firstName}
+                helperText={formik.touched.firstName ? formik.errors.firstName : null}
               />
             </Grid>
             <Grid item xs={12} md={3}>
@@ -64,6 +96,9 @@ const EmployeeForm = ({ currentEmployee, sectors, loading, loadingSubmit, onSubm
                 name="firstSurname"
                 value={formik.values.firstSurname}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.errors.firstSurname && formik.touched.firstSurname}
+                helperText={formik.touched.firstSurname ? formik.errors.firstSurname : null}
               />
             </Grid>
             <Grid item xs={12} md={3}>
@@ -136,6 +171,9 @@ const EmployeeForm = ({ currentEmployee, sectors, loading, loadingSubmit, onSubm
                 name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.errors.email && formik.touched.email}
+                helperText={formik.touched.email ? formik.errors.email : null}
               />
             </Grid>
             <Grid item xs={12} md={6}>

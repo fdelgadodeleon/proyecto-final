@@ -22,8 +22,8 @@ function App() {
       <div className="container">
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/employees/edit/:id" component={EmployeeFormWrapper} />
           <Route path="/employees/new" component={EmployeeFormWrapper} />
+          <Route path="/employees/edit/:id" component={EmployeeFormWrapper} />
           <Route path="/employees" component={Employees} />
           <Route path="/products/new" component={ProductFormWrapper} />
           <Route path="/products/edit/:id" component={ProductFormWrapper} />
