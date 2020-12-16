@@ -36,7 +36,7 @@ const Products = ({ history }) => {
 
   useEffect(() => {
     setLoading(true)
-    requests.get('https://5faeb24463e40a0016d8a044.mockapi.io/api/prodcts')
+    requests.get('https://5faeb24463e40a0016d8a044.mockapi.io/api/products')
       .then(res => {
         setProducts(res.data)
         setLoading(false)
