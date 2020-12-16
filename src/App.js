@@ -7,6 +7,7 @@ import { Switch, Route } from 'react-router-dom';
 import Header from './modules/header/Header';
 import Home from './modules/home/Home';
 import Employees from './modules/employees/Employees';
+import EmployeeFormWrapper from './modules/employees/EmployeeFormWrapper';
 import Products from './modules/products/Products';
 import Sales from './modules/sales/Sales';
 import NotFound from './modules/notFound/NotFound';
@@ -21,6 +22,8 @@ function App() {
       <div className="container">
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route path="/employees/edit/:id" component={EmployeeFormWrapper} />
+          <Route path="/employees/new" component={EmployeeFormWrapper} />
           <Route path="/employees" component={Employees} />
           <Route path="/products/new" component={ProductFormWrapper} />
           <Route path="/products/edit/:id" component={ProductFormWrapper} />
