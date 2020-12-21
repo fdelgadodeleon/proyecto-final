@@ -13,26 +13,31 @@ import Sales from './modules/sales/Sales';
 import NotFound from './modules/notFound/NotFound';
 import ProductFormWrapper from './modules/products/ProductFormWrapper';
 
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from './styles/theme';
+
 function App() {
   return (
-    <div>
-      <header>
-        <Header />
-      </header>
-      <div className="container">
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/employees/new" component={EmployeeFormWrapper} />
-          <Route path="/employees/edit/:id" component={EmployeeFormWrapper} />
-          <Route path="/employees" component={Employees} />
-          <Route path="/products/new" component={ProductFormWrapper} />
-          <Route path="/products/edit/:id" component={ProductFormWrapper} />
-          <Route path="/products" component={Products} />
-          <Route path="/sales" component={Sales} />
-          <Route component={NotFound} />
-        </Switch>
+    <ThemeProvider theme={theme}>
+      <div>
+        <header>
+          <Header />
+        </header>
+        <div className="container">
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/employees/new" component={EmployeeFormWrapper} />
+            <Route path="/employees/edit/:id" component={EmployeeFormWrapper} />
+            <Route path="/employees" component={Employees} />
+            <Route path="/products/new" component={ProductFormWrapper} />
+            <Route path="/products/edit/:id" component={ProductFormWrapper} />
+            <Route path="/products" component={Products} />
+            <Route path="/sales" component={Sales} />
+            <Route component={NotFound} />
+          </Switch>
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
 

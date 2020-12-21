@@ -145,12 +145,12 @@ const ProductForm = ({ onSubmit, onCancel, loadingSubmit, brands, currentProduct
           <Button
             variant="outlined"
             style={{ marginRight: 30 }}
-            color="primary"
+            color="secondary"
             onClick={onCancel}
             disabled={loadingSubmit}>Cancelar</Button>
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
             type="submit"
             disabled={loadingSubmit}>Aceptar</Button>
         </Grid>

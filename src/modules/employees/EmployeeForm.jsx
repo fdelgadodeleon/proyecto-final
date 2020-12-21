@@ -238,7 +238,7 @@ const EmployeeForm = ({ currentEmployee, sectors, loading, loadingSubmit, onSubm
                 style={{ marginLeft: 20 }}
                 type="submit"
                 variant="contained"
-                color="primary"
+                color="secondary"
                 disabled={loadingSubmit}>Guardar</Button>
             </Grid>
           </Grid>
